@@ -4,13 +4,13 @@ import os
 from singleton import SingletonMeta
 from controller import Controller
 from typing import List
-from model import GameData
+from model import GameData, Alien, GameObject, Rocket, Wall
 from constants import MAP_WIDTH, MAP_HEIGHT, EnumPlayerTurns
 
 class Menu:
     def __init__(self, menu_options: List[str], window: pygame.surface.Surface):
         self.options: List[str] = menu_options
-        self.font = pygame.font.Font(None, 32)
+        self.font = pygame.font.Font("../resources/RetroGaming.ttf", 32)
         self.selected_option = 0
         self.win = window
         self.fps = 60
@@ -49,7 +49,7 @@ class Menu:
 class MainMenu(Menu):
     def __init__(self, window):
         super().__init__(["NEW GAME", "LOAD GAME", "QUIT"], window)
-        self.headline_font = pygame.font.Font(None, 64)
+        self.headline_font = pygame.font.Font("../resources/RetroGaming.ttf", 48)
         headline_text: str = "KOSMOSA OKKUPANTI VERSION 1.01"
         self.headline = self.headline_font.render(headline_text, True, (255, 255, 255))
 
@@ -91,11 +91,32 @@ class View(metaclass=SingletonMeta):
         self.__win = pygame.display.set_mode((MAP_WIDTH, MAP_HEIGHT))
         pygame.display.set_caption("Space invaders")
         self.__save_cooldown: int = 0
+        self.font = pygame.font.Font("../resources/RetroGaming.ttf", 36)
+        # images
+        self.images = {}
+        self.images["invader1_1"] = pygame.image.load("../resources/invader1_1.png")
+        self.images["invader1_1"] = pygame.transform.scale(self.images["invader1_1"], (35, 25))
+        self.images["invader1_2"] = pygame.image.load("../resources/invader1_2.png")
+        self.images["invader1_2"] = pygame.transform.scale(self.images["invader1_2"], (35, 25))
+        self.images["invader2_1"] = pygame.image.load("../resources/invader2_1.png")
+        self.images["invader2_1"] = pygame.transform.scale(self.images["invader2_1"], (35, 25))
+        self.images["invader2_2"] = pygame.image.load("../resources/invader2_2.png")
+        self.images["invader2_2"] = pygame.transform.scale(self.images["invader2_2"], (35, 25))
+        self.images["invader3_1"] = pygame.image.load("../resources/invader3_1.png")
+        self.images["invader3_1"] = pygame.transform.scale(self.images["invader3_1"], (35, 25))
+        self.images["invader3_2"] = pygame.image.load("../resources/invader3_2.png")
+        self.images["invader3_2"] = pygame.transform.scale(self.images["invader3_2"], (35, 25))
+
+        self.player_image = pygame.image.load("../resources/player.png")
+        self.player_image = pygame.transform.scale(self.player_image, (50, 50))
+
+        self.explosion_image = pygame.image.load("../resources/explosion.png")
+        self.explosion_image = pygame.transform.scale(self.explosion_image, (35, 25))
+        
 
     def main(self):
         running = True
         main_menu = MainMenu(self.__win)
-        load_menu = LoadMenu(self.__win)
         while running:
             option: str = main_menu.run()
             if option == "QUIT":
@@ -104,7 +125,10 @@ class View(metaclass=SingletonMeta):
             elif option == "NEW GAME":
                 self.game_loop("../resources/starting_position.pickle")
             elif option == "LOAD GAME":
-                self.game_loop(load_menu.run())
+                load_menu = LoadMenu(self.__win)
+                name = load_menu.run()
+                if ".pickle" in name:
+                    self.game_loop(name)
 
     def handle_input(self) -> List[EnumPlayerTurns]:
         keys: List[EnumPlayerTurns] = [EnumPlayerTurns.NONE]
@@ -126,7 +150,7 @@ class View(metaclass=SingletonMeta):
         clock = pygame.time.Clock()
         game_is_running = True
         while game_is_running:
-            print(clock.get_fps())
+            #print(clock.get_fps())
             clock.tick(self.__fps)
             turn: List[EnumPlayerTurns] = self.handle_input() 
 
@@ -140,18 +164,36 @@ class View(metaclass=SingletonMeta):
             self.render_objects(data)
             pygame.event.pump()
             self.__save_cooldown = max(0, self.__save_cooldown - 1)
+            if data.game_status != 0:
+                break
             
         
 
     def render_objects(self, data: GameData) -> None:
         self.__win.fill((0, 0, 0))
         for obj in data.objects:
-            pygame.draw.rect(self.__win, (0, 0, 255), obj.get_cords())
-        pygame.draw.rect(self.__win, (255, 0, 0), data.player.get_cords())
+            if type(obj) == Alien:
+                self.__win.blit(self.images[f'invader2_{obj._frame + 1}'], (obj._x, obj._y))
+            elif type(obj) == Rocket:
+                pygame.draw.rect(self.__win, (255, 255, 255), obj.get_cords())
+            elif type(obj) == Wall:
+                pygame.draw.rect(self.__win, (0, 255, 0), obj.get_cords())
+        self.__win.blit(self.player_image, (data.player._x, data.player._y))
+        
+        for expl in data.explosions:
+            self.__win.blit(self.explosion_image, (expl._x, expl._y))
         
         # player stats
-        pygame.draw.rect(self.__win, (150, 150, 150), (0, 0, 1000, 80))
+        pygame.draw.rect(self.__win, (0, 0, 0), (0, 0, 1000, 80))
         pygame.draw.rect(self.__win, (255, 255, 255), (0, 0, 1000, 80), 2)
 
+        health_text = self.font.render(f'{data.health * "<3 "}', True, (255, 0, 0))  
+        health_rect = health_text.get_rect()
+        health_rect.center = (120, 40) 
+        self.__win.blit(health_text, health_rect)
+        higscore_text = self.font.render(f'SCORE: {data.score}', True, (255, 255 ,255))
+        higscore_rect = higscore_text.get_rect()
+        higscore_rect.center = (800, 40)
+        self.__win.blit(higscore_text, higscore_rect)
 
         pygame.display.update()

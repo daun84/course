@@ -2,9 +2,15 @@ from model import GameData, Alien, Wall
 import pickle
 
 starting_position = GameData()
-for i in range(6):
+for i in range(2):
     for j in range(10):
-        starting_position.objects.append(Alien(j * 70, i * 70 + 100, "invader"))
+        starting_position.objects.append(Alien(j * 70, i * 70 + 100, "invader1"))
+for i in range(2):
+    for j in range(10):
+        starting_position.objects.append(Alien(j * 70, i * 70 + 240, "invader2"))
+for i in range(2):
+    for j in range(10):
+        starting_position.objects.append(Alien(j * 70, i * 70 + 380, "invader3"))
 
 for i in range(2):
     for j in range(4):

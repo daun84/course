@@ -3,6 +3,7 @@ from dataclasses_json import dataclass_json
 from typing import List, Callable, Tuple
 from abc import ABC, abstractmethod
 from constants import MAP_WIDTH, MAP_HEIGHT, EnumPlayerTurns
+from singleton import SingletonMeta
 import pickle
 import random
 
@@ -14,6 +15,17 @@ class DirectionVector:
     def inverse(self):
         self.x *= -1
         self.y *= -1
+
+class Explosion:
+    def __init__(self, x: int, y: int):
+        self._x = x
+        self._y = y
+        self._width = 35
+        self._height = 25
+        self.frame = 3
+    
+    def get_cords(self) -> Tuple[int, int, int, int]:
+        return self._x, self._y, self._width, self._height
 
 
 class GameObject:
@@ -39,17 +51,19 @@ class GameObject:
 class Alien(GameObject):
     def __init__(self, x, y, name):
         super().__init__(x, y, 35, 25, name, 1, DirectionVector(1, 0))
-        self._position_observer: Callable[[], None]
+        self._position_observer: Callable[[str], None]
         self._leap_distance: int = 0 
+        self._frame: int = 0 # two frames, to make animation
 
-    def set_observer(self, callback: Callable[[], None]) -> None:
+
+    def set_observer(self, callback: Callable[[str], None]) -> None:
         self._position_observer = callback
 
     def invoke_leap(self) -> None:
         self._leap_distance = self._height * 2
 
-    def notify_observer(self) -> None:
-        self._position_observer()
+    def notify_observer(self, signal: str) -> None:
+        self._position_observer(signal)
     
     def move(self):
         if self._leap_distance > 0:
@@ -61,12 +75,15 @@ class Alien(GameObject):
             self._y += self._direction.y * self._speed
 
             if(self._x + self._width >= MAP_WIDTH or self._x <= 0):
-                self.notify_observer()
+                self.notify_observer("border")
+
+        if self._y - self._height >= 750:
+            self.notify_observer("end")
 
 
 class Player(GameObject):
     def __init__(self):
-        super().__init__(450, 900, 50, 50, "player", 3, DirectionVector(0, 0))
+        super().__init__(450, 930, 50, 50, "player", 3, DirectionVector(0, 0))
 
     def move(self) -> None:
         new_pos = self._x + self._direction.x * self._speed
@@ -81,7 +98,7 @@ class Wall(GameObject):
 
 class Rocket(GameObject):
     def __init__(self, x, y, name, direction: DirectionVector, speed):
-        super().__init__(x, y, 10, 20, name, speed, direction)
+        super().__init__(x, y, 5, 15, name, speed, direction)
 
     def move(self):
         self._x += self._direction.x * self._speed
@@ -97,8 +114,11 @@ class GameData:
     health: int = 3
     player_cooldown: int = 0
     alien_cooldown: int = 0
+    game_status: int = 0 # -1 - lose, 0 - continues, 1 - win
+    alien_animation: int = 20
+    explosions: List[Explosion] = field(default_factory=list)
 
-class Game:
+class Game(metaclass=SingletonMeta):
     def __init__(self):
         self._data = GameData()
         self._change_direction: bool = False
@@ -108,10 +128,13 @@ class Game:
         for obj in self._data.objects:
             if type(obj) != Alien:
                 continue
-            obj.set_observer(self.set_change_direction)
+            obj.set_observer(self.get_signal_from_alien)
 
-    def set_change_direction(self) -> None:
-        self._change_direction = True
+    def get_signal_from_alien(self, signal: str) -> None:
+        if signal == "border":
+            self._change_direction = True
+        else:
+            self._data.game_status = -1
 
     def change_alien_direction(self) -> None:
         for obj in self._data.objects:
@@ -126,6 +149,10 @@ class Game:
     def handle_collision(self, obj: GameObject) -> None:
         if type(obj) == Player:
             self._data.health -= 1
+        elif type(obj) == Alien: # DEATH ANIMATIONS
+            self._data.score += 50
+            self._data.explosions.append(Explosion(obj._x, obj._y))
+            self._data.objects.remove(obj)
         else:
             self._data.objects.remove(obj) 
 
@@ -157,8 +184,8 @@ class Game:
         self._data.player.set_direction(DirectionVector(direction, 0))
         if EnumPlayerTurns.FIRE in turn and self._data.player_cooldown == 0:
             self._data.player_cooldown = 30
-            x: int = self._data.player._x + 15
-            y: int = self._data.player._y - 40
+            x: int = self._data.player._x + 20
+            y: int = self._data.player._y - 20
             self.launch_rocket(x, y, "rocket", DirectionVector(0, -1), 12)
 
     def invoke_alien_attack(self) -> None:
@@ -183,7 +210,7 @@ class Game:
 
         for obj in random.sample(chosen, min(3, len(chosen))):
             x = obj._x + 15
-            y = obj._y + 50
+            y = obj._y + 50 
 
             self.launch_rocket(x, y, "rocket", DirectionVector(0, 1), 7)
         
@@ -208,9 +235,29 @@ class Game:
         if self._change_direction:
             self.change_alien_direction()
 
+        if not any(isinstance(obj, Alien) for obj in self._data.objects):
+            self._data.game_status = 1
+
+        if self._data.health <= 0:
+            self._data.game_status = -1
+        
+
         self._data.player_cooldown = max(0, self._data.player_cooldown - 1)
         self._data.alien_cooldown = max(0, self._data.alien_cooldown - 1)
+        self._data.alien_animation = max(0, self._data.alien_animation - 1)
         self._change_direction = False
+
+        if self._data.alien_animation == 0:
+            self._data.alien_animation = 20
+            for obj in self._data.objects:
+                if type(obj) != Alien:
+                    continue
+                obj._frame = 1 - obj._frame
+
+        for explosion in self._data.explosions:
+            explosion.frame -= 1
+            if explosion.frame == 0:
+                self._data.explosions.remove(explosion)
 
     def get_data(self) -> GameData:
         return self._data
