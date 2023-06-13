@@ -65,7 +65,7 @@ class Alien(GameObject):
     def notify_observer(self, signal: str) -> None:
         self._position_observer(signal)
     
-    def move(self):
+    def move(self) -> None:
         if self._leap_distance > 0:
             temp = min(self._speed * 2, self._leap_distance)
             self._y += self._speed * 2
@@ -100,7 +100,7 @@ class Rocket(GameObject):
     def __init__(self, x, y, name, direction: DirectionVector, speed):
         super().__init__(x, y, 5, 15, name, speed, direction)
 
-    def move(self):
+    def move(self) -> None:
         self._x += self._direction.x * self._speed
         self._y += self._direction.y * self._speed 
 
@@ -149,7 +149,7 @@ class Game(metaclass=SingletonMeta):
     def handle_collision(self, obj: GameObject) -> None:
         if type(obj) == Player:
             self._data.health -= 1
-        elif type(obj) == Alien: # DEATH ANIMATIONS
+        elif type(obj) == Alien: 
             self._data.score += 50
             self._data.explosions.append(Explosion(obj._x, obj._y))
             self._data.objects.remove(obj)

@@ -6,6 +6,7 @@ from controller import Controller
 from typing import List
 from model import GameData, Alien, GameObject, Rocket, Wall
 from constants import MAP_WIDTH, MAP_HEIGHT, EnumPlayerTurns
+from time import sleep
 
 class Menu:
     def __init__(self, menu_options: List[str], window: pygame.surface.Surface):
@@ -117,18 +118,20 @@ class View(metaclass=SingletonMeta):
     def main(self):
         running = True
         main_menu = MainMenu(self.__win)
+        chosen_game: str = ""
         while running:
             option: str = main_menu.run()
             if option == "QUIT":
                 pygame.quit()
                 running = False
             elif option == "NEW GAME":
-                self.game_loop("../resources/starting_position.pickle")
+                chosen_game = "../resources/starting_position.pickle"
             elif option == "LOAD GAME":
                 load_menu = LoadMenu(self.__win)
-                name = load_menu.run()
-                if ".pickle" in name:
-                    self.game_loop(name)
+                chosen_game = load_menu.run()
+            
+            if ".pickle" in chosen_game:
+                    self.game_loop(chosen_game)
 
     def handle_input(self) -> List[EnumPlayerTurns]:
         keys: List[EnumPlayerTurns] = [EnumPlayerTurns.NONE]
@@ -145,12 +148,20 @@ class View(metaclass=SingletonMeta):
             keys.append(EnumPlayerTurns.EXIT)
         return keys
 
+    def print_to_center(self, message: str) -> None:
+        self.__win.fill((0, 0, 0))
+        text = self.font.render(message, True, (255, 255 ,255))
+        rect = text.get_rect()
+        rect.center = (MAP_WIDTH // 2, MAP_HEIGHT // 2)
+        self.__win.blit(text, rect)
+        pygame.display.update()
+
     def game_loop(self, name: str) -> None:
         self.__controller.load_game(name)
         clock = pygame.time.Clock()
         game_is_running = True
         while game_is_running:
-            #print(clock.get_fps())
+            print(clock.get_fps())
             clock.tick(self.__fps)
             turn: List[EnumPlayerTurns] = self.handle_input() 
 
@@ -164,8 +175,15 @@ class View(metaclass=SingletonMeta):
             self.render_objects(data)
             pygame.event.pump()
             self.__save_cooldown = max(0, self.__save_cooldown - 1)
-            if data.game_status != 0:
+            if data.game_status == 1:
+                self.print_to_center("YOU WON")
+                sleep(1)
                 break
+            elif data.game_status == -1:
+                self.print_to_center("YOU LOST")
+                sleep(1)
+                break
+
             
         
 

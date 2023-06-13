@@ -15,7 +15,7 @@ class Controller(metaclass=SingletonMeta):
     def save_game(self):
         data = self.__model.get_data()
         name = f'{datetime.now().strftime("%H:%M:%S")}.pickle'
-        with open(os.path.join('saves', name), "wb") as file:
+        with open(os.path.join('../saves', name), "wb") as file:
             pickle.dump(data, file)
 
     def load_game(self, name: str):
