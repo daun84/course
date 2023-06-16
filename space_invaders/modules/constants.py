@@ -11,4 +11,3 @@ class EnumPlayerTurns(Enum):
     SAVE = 'save'
     EXIT = 'exit'
     
-# valid
