@@ -1,12 +1,15 @@
 from typing import List, Callable, Tuple
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
+
+from models.enums.EnumObjectType import EnumObjectType
 from models.Vector2D import Vector2D
 
 
 @dataclass_json
-@dataclass(kw_only=True)
+@dataclass
 class GameObject:
+    object_type: EnumObjectType 
     position: Vector2D 
     width: int 
     height: int 

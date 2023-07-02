@@ -1,12 +1,11 @@
 from controllers.GameController import GameController
 
 from models.GameData import GameData
-from models.Alien import Alien
+from models.Explosion import Explosion
 from models.GameObject import GameObject
-from models.Rocket import Rocket
-from models.Wall import Wall
-from models.GameData import MAP_WIDTH, MAP_HEIGHT
+from models.constants import MAP_WIDTH, MAP_HEIGHT
 from models.enums.EnumPlayerTurns import EnumPlayerTurns
+from models.enums.EnumObjectType import EnumObjectType
 
 from views.menus.MainMenu import MainMenu
 from views.menus.LoadMenu import LoadMenu
@@ -59,7 +58,7 @@ class View:
                 pygame.quit()
                 running = False
             elif option == "NEW GAME":
-                self.__controller.load_game("starting_position.pickle")
+                self.__controller.load_game("starting_position.bin")
                 game_was_chosen = True
             elif option == "LOAD GAME":
                 load_menu = LoadMenu(self.__win)
@@ -127,12 +126,13 @@ class View:
     def render_objects(self, data: GameData) -> None:
         self.__win.fill((0, 0, 0))
         for obj in data.objects:
-            if type(obj) == Alien:
-                self.__win.blit(self.images[f'{obj.name}_{obj.current_frame + 1}'], (obj.position.x, obj.position.y))
-            elif type(obj) == Rocket:
+            if obj.object_type is EnumObjectType.Rocket:
                 pygame.draw.rect(self.__win, (255, 255, 255), obj.get_cords())
-            elif type(obj) == Wall:
+            elif obj.object_type is EnumObjectType.Wall:
                 pygame.draw.rect(self.__win, (0, 255, 0), obj.get_cords())
+        for obj in data.objects:
+            if obj.object_type is EnumObjectType.Alien:
+                self.__win.blit(self.images[f'{obj.name}_{data.current_alien_frame + 1}'], (obj.position.x, obj.position.y))
         self.__win.blit(self.player_image, (data.player.position.x, data.player.position.y))
 
         for expl in data.explosions:

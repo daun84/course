@@ -1,15 +1,19 @@
-from models.GameData import GameData, MAP_HEIGHT, MAP_WIDTH, ALIEN_ANIMATION_COUNTDOWN
-from models.Alien import Alien, ALIEN_HEIGHT, ALIEN_WIDTH
-from models.Wall import Wall
+from models.GameData import GameData
+from models.constants import MAP_HEIGHT, MAP_WIDTH, ALIEN_ANIMATION_COUNTDOWN, ALIEN_HEIGHT, ALIEN_WIDTH, ROCKET_HEIGHT, ROCKET_WIDTH, ALIEN_SPEED, ROCKET_SPEED
 from models.Vector2D import Vector2D
 from models.GameObject import GameObject
-from models.Player import Player
 from models.enums.EnumPlayerTurns import EnumPlayerTurns
-from models.Rocket import Rocket
+from models.enums.EnumObjectType import EnumObjectType
 from models.Explosion import Explosion
 
-from controllers.GameObjectMovement import GameObjectMovement
+from controllers.ControllerAlien import ControllerAlien
+from controllers.ControllerPlayer import ControllerPlayer
+from controllers.ControllerRocket import ControllerRocket
+from controllers.ControllerWall import ControllerWall
+from controllers.interfaces.IControllerObject import IControllerObject
 from controllers.enums.EnumAlienEventType import EnumAlienEventType
+from controllers.interfaces.IControllerObject import IControllerObject
+from controllers.GameSerializationController import GameSerializationController
 
 import random
 import pickle
@@ -40,68 +44,47 @@ class GameController:
             raise Exception("Only one instance is allowed")
         self.__instance = self
         self.__data = GameData()
-        self.__object_mover = GameObjectMovement.instance()
-        self.__object_mover.add_listener_border_reach(self.__on_alien_border_reach)
         self.__aliens_reached_bottom: bool = False
+        self.__controllers: List[IControllerObject] = []
+        self.__player_controller: ControllerPlayer = None
+        self.__serialization_controller = GameSerializationController.instance()
 
     def load_game(self, file_name: str):
-        with open(f'saves/{file_name}', "rb") as file:
-            self.__data = pickle.load(file)
+        self.__data = self.__serialization_controller.read_data_from_bin(file_name)
+        self.__create_controllers_for_model()
+        self.__tie_aliens()
         
     def save_game(self):
-        file_name: str = datetime.now().strftime("saves/%Y-%m-%d_%H:%M:%S.pickle")
-        with open(file_name, "wb") as file:
-            pickle.dump(self.__data, file)
+        file_name: str = datetime.now().strftime("%Y-%m-%d_%H:%M:%S.bin")
+        self.__serialization_controller.transfer_data_to_bin(file_name, self.__data)
 
     def load_next_round(self):
-
-        for obj in self.__data.objects:
-            if type(obj) == Rocket:
-                self.__data.objects.remove(obj)
-
-        for i in range(2):
-            for j in range(10):
-                self.__data.objects.append(
-                    Alien(position=Vector2D(x=j * 70, y=i * 70 + 100), name="invader1"))
-        for i in range(2):
-            for j in range(10):
-                self.__data.objects.append(
-                    Alien(position=Vector2D(x=j * 70, y=i * 70 + 240), name="invader2"))
-        for i in range(2):
-            for j in range(10):
-                self.__data.objects.append(
-                    Alien(position=Vector2D(x=j * 70, y=i * 70 + 380), name="invader3"))
-        self.__data.health: int = 3
-        self.__data.player_shot_cooldown: int = 0
-        self.__data.alien_shot_cooldown: int = 0
-        self.__data.alien_leap_countdown: int = 0 
+        score = self.__data.score
+        self.load_game("starting_position.pickle")
+        self.__data.score = score
 
     # -1 - lose, 0 - continues, 1 - round secured
     def update_game(self, turn: List[EnumPlayerTurns]) -> int:
-        self.__object_mover.move_objects(self.__data.objects, self.__data.alien_leap_countdown)
+        for controller in self.__controllers:
+            controller.move()
+        self.__player_controller.move()
 
-        self.__update_player(turn)
-        player = self.__data.player
-        player.position.x = max(0, min(MAP_WIDTH - player.width, player.position.x + player.direction.x * player.speed))
+        for controller in self.__controllers:
+            controller.update()
+        self.__player_controller.update(turn)
 
-        for obj in self.__data.objects:
-            self.__check_collisions_for_object(obj)
-        self.__check_collisions_for_object(self.__data.player)
-
-        if not self.__data.alien_leap_countdown:
+        if self.__data.alien_shot_cooldown == 0:
             self.__invoke_alien_attack()
 
         self.__data.player_shot_cooldown = max(0, self.__data.player_shot_cooldown - 1)
         self.__data.alien_shot_cooldown = max(0, self.__data.alien_shot_cooldown - 1)
         self.__data.alien_leap_countdown = max(0, self.__data.alien_leap_countdown - 1)
 
-        self.__data.alien_animation_countdown = max(0, self.__data.alien_animation_countdown - 1)
+
         if self.__data.alien_animation_countdown == 0:
             self.__data.alien_animation_countdown = ALIEN_ANIMATION_COUNTDOWN
-            for obj in self.__data.objects:
-                if type(obj) is not Alien:
-                    continue
-                obj.current_frame = 1 - obj.current_frame 
+            self.__data.current_alien_frame = 1 - self.__data.current_alien_frame
+        self.__data.alien_animation_countdown = max(0, self.__data.alien_animation_countdown - 1)
 
         for expl in self.__data.explosions:
             expl.explosion_countdown = max(0, expl.explosion_countdown - 1)
@@ -110,7 +93,7 @@ class GameController:
 
         game_status: int = 0
 
-        has_aliens = any(isinstance(obj, Alien) for obj in self.__data.objects)
+        has_aliens = any(isinstance(con, ControllerAlien) for con in self.__controllers)
 
         if not has_aliens:
             game_status = 1
@@ -129,71 +112,69 @@ class GameController:
     # in-game logic
     #  
 
-    def __on_alien_border_reach(self, event_type: EnumAlienEventType):
-        if event_type is EnumAlienEventType.SideBorderReach:
-            for obj in self.__data.objects:
-                if type(obj) is not Alien:
-                    continue
-                obj.direction = -obj.direction
-            self.__data.alien_leap_countdown = 15
-        elif event_type is EnumAlienEventType.BottomBorderReach:
-            self.__aliens_reached_bottom = True
+    def __create_controllers_for_model(self):
+        self.__controllers = []
+        self.__player_controller = None
 
-    def __launch_rocket(self, x, y, name, direction: Vector2D, speed):
-        self.__data.objects.append(Rocket(position=Vector2D(x,y), name=name, direction=direction, speed=speed))
+        self.__player_controller = ControllerPlayer(self.__data.player, self.__launch_rocket, self.__data)
 
-    def __handle_collision(self, obj: GameObject):
-        if type(obj) == Player:
-            self.__data.health -= 1
-        elif type(obj) == Alien: 
-            self.__data.score += 50
-            self.__data.explosions.append(Explosion(position=obj.position))
-            self.__data.objects.remove(obj)
-        else:
-            self.__data.objects.remove(obj) 
-
-    def __are_intersected(self, obj1: GameObject, obj2: GameObject) -> bool:
-        check_horiz1: bool = obj2.position.x < (obj1.position.x + obj1.width) and obj2.position.x >= obj1.position.x
-        check_horiz2: bool = (obj2.position.x + obj2.width) > obj1.position.x and (obj2.position.x + obj2.width) <= (obj1.position.x + obj2.width)
-        check_vert1: bool = obj2.position.y < (obj1.position.y + obj1.height) and obj2.position.y >= obj1.position.y
-        check_vert2: bool = (obj2.position.y + obj2.height) > obj1.position.y and (obj2.position.y + obj2.height) <= (obj1.position.y + obj2.height)
-        return (check_horiz1 or check_horiz2) and (check_vert1 or check_vert2)
-
-    def __check_collisions_for_object(self, target: GameObject):
-        if type(target) == Rocket and (target.position.y <= 0 or target.position.y >= MAP_HEIGHT):
-            self.__handle_collision(target)
-            return
         for obj in self.__data.objects:
-            if obj == target:
-                continue
-            if self.__are_intersected(target, obj):
-                self.__handle_collision(obj)
-                self.__handle_collision(target)
-                break
+            if obj.object_type is EnumObjectType.Alien:
+                self.__controllers.append(ControllerAlien(obj, self.__on_bottom_reach))
+            elif obj.object_type is EnumObjectType.Wall:
+                self.__controllers.append(ControllerWall(obj))
+            elif obj.object_type is EnumObjectType.Rocket:
+                self.__controllers.append(ControllerRocket(obj, self.__on_rocket_collision, self.__controllers, self.__player_controller))
+        
 
-    def __update_player(self, turn: List[EnumPlayerTurns]):
-        direction: int = 0 
-        if EnumPlayerTurns.Left in turn:
-            direction -= 1
-        if EnumPlayerTurns.Right in turn:
-            direction += 1
-        self.__data.player.direction = Vector2D(direction, 0)
-        if EnumPlayerTurns.Fire in turn and self.__data.player_shot_cooldown == 0:
-            self.__data.player_shot_cooldown = 30 
-            x: int = self.__data.player.position.x + 20
-            y: int = self.__data.player.position.y - 20
-            self.__launch_rocket(x, y, "rocket", Vector2D(0, -1), 12)
+    def __on_bottom_reach(self):
+        self.__aliens_reached_bottom = True
+
+    def __tie_aliens(self):
+        for i in self.__controllers:
+            if i.obj.object_type is not EnumObjectType.Alien:
+                continue
+            for alien in self.__controllers:
+                if alien.obj.object_type is not EnumObjectType.Alien or i is alien:
+                    continue
+                i.add_listener_border_reach(alien.on_border_reach)
+
+    def __on_rocket_collision(self, target: IControllerObject):
+        if target.obj.object_type is EnumObjectType.Player:
+            self.__data.health -= 1
+        elif target.obj.object_type is EnumObjectType.Alien: 
+            self.__data.score += 50
+            self.__data.explosions.append(Explosion(position=target.obj.position))
+            for alien in self.__controllers:
+                if alien.obj.object_type is not EnumObjectType.Alien:
+                    continue
+                alien.remove_listener_border_reach(target.on_border_reach)
+            self.__data.objects.remove(target.obj)
+            self.__controllers.remove(target)
+        else:
+            self.__data.objects.remove(target.obj)
+            self.__controllers.remove(target) 
+        
+    def __launch_rocket(self, x, y, name, direction: Vector2D, speed):
+        rocket = GameObject(
+            EnumObjectType.Rocket,
+            Vector2D(x,y),
+            ROCKET_WIDTH,
+            ROCKET_HEIGHT,
+            name,
+            speed,
+            direction)
+        self.__data.objects.append(rocket)
+        self.__controllers.append(ControllerRocket(rocket, self.__on_rocket_collision, self.__controllers, self.__player_controller))
 
     def __invoke_alien_attack(self):
-        if self.__data.alien_shot_cooldown != 0:
-            return
         self.__data.alien_shot_cooldown = 90
 
-        aliens: List[Alien] = []
-        chosen: List[Alien] = []
+        aliens: List[GameObject] = []
+        chosen: List[GameObject] = []
         
         for obj in self.__data.objects:
-            if type(obj) == Alien:
+            if obj.object_type is EnumObjectType.Alien:
                 aliens.append(obj)
                 
         aliens.sort(key=lambda obj: (obj.position.x, -obj.position.y))
@@ -207,4 +188,4 @@ class GameController:
         for obj in random.sample(chosen, min(3, len(chosen))):
             x = obj.position.x + 15
             y = obj.position.y + 50 
-            self.__launch_rocket(x, y, "rocket", Vector2D(0, 1), 7)
+            self.__launch_rocket(x, y, "rocket", Vector2D(0, 1), ROCKET_SPEED)
