@@ -60,7 +60,7 @@ class GameController:
 
     def load_next_round(self):
         score = self.__data.score
-        self.load_game("starting_position.pickle")
+        self.load_game("starting_position.bin")
         self.__data.score = score
 
     # -1 - lose, 0 - continues, 1 - round secured
