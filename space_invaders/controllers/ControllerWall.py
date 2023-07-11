@@ -18,3 +18,4 @@ class ControllerWall(IControllerObject):
     @property
     def obj(self):
         return self.__wall
+
