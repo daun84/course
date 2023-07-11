@@ -17,11 +17,13 @@ class CommandCreateActor(ICommand):
         self.selected_building = selected_building
         self.actor_type = actor_type
         self.position = selected_building.position.copy()
+        self.actor = Actor()
         self.position.x += random.randint(-2, 2)
         self.position.y += random.randint(-2, 2)
         self.controller_actor = self.controller_game.create_actor_controller(self.actor_type,
                                                                              self.selected_building.tribe, 
-                                                                             self.position)
+                                                                             self.position,
+                                                                             self.actor)
 
     def execute(self):
         self.controller_game.controllers_actors.append(self.controller_actor)
@@ -33,4 +35,5 @@ class CommandCreateActor(ICommand):
             self.controller_game.controllers_actors.remove(self.controller_actor)
         self.controller_actor = self.controller_game.create_actor_controller(self.actor_type,
                                                                              self.selected_building.tribe, 
-                                                                             self.position)
+                                                                             self.position,
+                                                                             self.actor)
