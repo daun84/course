@@ -26,6 +26,7 @@ from models.enums.EnumTribe import EnumTribe
 from utils.decorators.decorator_logging import decorator_logging
 from utils.decorators.decorator_try_catch import decorator_try_catch
 from utils.iterator.CollectionActorControllers import CollectionActorControllers
+from utils.UtilsPyGame import UtilsPyGame
 
 from views.components.ComponentButton import ComponentButton
 from views.resources.ResourcesHoodrick import ResourcesHoodrick
@@ -236,6 +237,7 @@ class WindowMain:
 
             time.sleep(0.01)
 
+    @UtilsPyGame.timer_decorator
     def update(self, delta_sec):
 
         # add ComponentButton over each building

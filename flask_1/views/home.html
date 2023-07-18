@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        {% if current_user.is_authenticated %}
+        <p>Hello, {{ current_user.user.username }}!</p>
+        <a class="button" href="{{ url_for('authentication.logout') }}">Logout</a>
+        {% else %}
+        <p>Hello, Anonymous!</p>
+        <a class="button" href="{{ url_for('authentication.login') }}">Login</a>
+        <a class="button" href="{{ url_for('authentication.register') }}">Register</a>
+        {% endif %}
+    </div>
+</body>
+</html>
