@@ -1,19 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Information</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>{% block title %}Default Title{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
+    {% include 'topbar.html' %}
+
+    {% if g.user %}
+    <div class="button-container">
+        <a href="{{ url_for('posts.new') }}" class="new-post-button">New Post</a>
+    </div>
+    {% endif %}
+
     <div class="container">
-        {% if current_user.is_authenticated %}
-        <p>Hello, {{ current_user.user.username }}!</p>
-        <a class="button" href="{{ url_for('authentication.logout') }}">Logout</a>
+        {% if posts %}
+        <section class="posts">
+            {% for post in posts %}
+                <div class="post">
+                    <div class="author">{{ post.post_author }}</div>
+                    <div class="title">
+                        <a href="{{ url_for('posts.view', url_slug=post.post_url_slug) }}">
+                            {{ post.post_title }}
+                        </a>
+                    </div>
+                    <div class="date">{{ post.post_created }}</div>
+                </div>
+            {% endfor %}
+        </section>
         {% else %}
-        <p>Hello, Anonymous!</p>
-        <a class="button" href="{{ url_for('authentication.login') }}">Login</a>
-        <a class="button" href="{{ url_for('authentication.register') }}">Register</a>
+        <h1>There's no posts right now</h1>
         {% endif %}
     </div>
+
 </body>
 </html>

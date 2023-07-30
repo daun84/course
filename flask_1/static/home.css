@@ -1,0 +1,61 @@
+/* Posts Styles */
+.container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.post {
+    width: 500px;
+    padding: 20px;
+    background-color: #fff; /* White background for each post */
+    border: 1px solid #e1e1e1; /* Light gray border around each post */
+    border-radius: 5px;
+    margin: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+}
+
+.author {
+    font-weight: bold;
+    color: #0079d3; /* Reddit's blue color for the author name */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.title {
+    font-size: 20px;
+    margin-top: 10px;
+    color: #333; /* Dark gray color for the post title */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.date {
+    color: #999; /* Light gray color for the date */
+    font-size: 12px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.new-post-button {
+    width: 600px;
+    padding: 12px 24px;
+    background-color: #0079d3; /* Reddit's blue color for the New Post button */
+    color: #fff; /* White text color for the New Post button */
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.new-post-button:hover {
+    background-color: #005da6; /* Darker shade on hover */
+}

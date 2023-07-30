@@ -1,0 +1,29 @@
+/* Flash Message Styles */
+.flash-message {
+    position: fixed;
+    left: 50%; /* Adjust the horizontal position to center the flash messages */
+    transform: translate(-50%, -50%); /* Center the flash messages using transform */
+    background-color: #0079d3; /* Reddit's blue color for the flash message background */
+    color: #fff; /* White text color for the flash message text */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow effect */
+    z-index: 9999; /* Ensure the flash message stays on top of other elements */
+}
+
+.flash-message.success {
+    background-color: #43a047; /* Green color for success messages */
+}
+
+.flash-message.error {
+    background-color: #d32f2f; /* Red color for error messages */
+}
+
+.flash-message a {
+    color: #fff; /* White color for links within the flash message */
+    text-decoration: underline; /* Underline links within the flash message */
+}
+
+.flash-message a:hover {
+    text-decoration: none; /* Remove underline on hover for links within the flash message */
+}

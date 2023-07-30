@@ -1,0 +1,58 @@
+/* Top Bar Styles */
+/* ... (your existing styles for the top bar) ... */
+
+/* Single Post Styles */
+.container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.post {
+    width: 100%; /* Posts will occupy 100% of the available width */
+    min-width: 800px; /* Minimum width for each post */
+    max-width: 800px; /* Maximum width for each post */
+    background-color: #fff; /* White background for the post */
+    border: 1px solid #e1e1e1; /* Light gray border around the post */
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+}
+
+.post-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #333; /* Dark gray color for the post title */
+    word-wrap: break-word; /* Allow the title to wrap into multiple lines */
+}
+
+.post-date {
+    font-size: 14px;
+    color: #666; /* Medium gray color for the post date and author */
+    margin-bottom: 20px;
+}
+
+.post-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333; /* Dark gray color for the post body text */
+}
+
+.edit-button {
+    display: block;
+    width: 120px;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #0079d3; /* Reddit's blue color for the Edit button */
+    color: #fff; /* White text color for the Edit button */
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #005da6; /* Darker shade on hover */
+}

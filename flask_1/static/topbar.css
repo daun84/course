@@ -1,0 +1,54 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Top Bar Styles */
+header {
+    background-color: #deb29f; /* Change the background color as desired */
+    padding: 10px;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 24px; /* Adjust the font size for the logo */
+    font-weight: bold;
+    color: #333; /* Change the color for the logo text */
+    text-decoration: none;
+}
+
+.search-form {
+    display: flex;
+}
+
+.search-form input[type="text"] {
+    padding: 10px; /* Increase padding for more space inside the input field */
+    border: none; /* Remove the default border */
+    outline: none; /* Remove the outline when focused */
+    flex: 1; /* Allow the input field to take all available space */
+    width: 400px; /* Set an explicit width to make the input field longer */
+    border-radius: 20px; /* Add border radius to make it curvy */
+}
+
+.search-form button[type="submit"] {
+    padding: 10px 20px; /* Increase padding for more space inside the button */
+    margin-left: 5px;
+    background-color: #6f5d1a9b; /* Change the background color for the button */
+    color: #fff; /* Change the text color for the button */
+    border: none; /* Remove the default border */
+    border-radius: 20px; /* Add border radius to make it curvy */
+    cursor: pointer;
+}
+
+
+.user-links a {
+    margin-left: 10px;
+    text-decoration: none;
+    color: #333; /* Change the color for the links */
+}

@@ -9,5 +9,4 @@ channels:
   - conda-forge
 dependencies:
   - flask
-  - pip:
-    - flask_login
+  - sqlalchemy

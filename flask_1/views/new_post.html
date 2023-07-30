@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Write a Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='flash.css') }}">
+</head>
+<body>
+    {% include 'topbar.html' %}
+
+    <div class="container">
+        <section class="edit-post">
+            <form method="POST" action="{{ url_for('posts.new') }}">
+
+                <input type="text" name="title" placeholder="Title" class="post-title" value="{{ post.post_title }}">
+                <textarea name="body" placeholder="Main Text" class="post-body">{{ post.post_body }}</textarea>
+                <input type="text" name="url_slug" placeholder="URL Slug" class="url-slug" value="{{ post.post_url_slug }}">
+                
+                <div class="buttons">
+                    <button type="submit" name="action" value="draft">Save as Draft</button>
+                    <button type="submit" name="action" value="publish">Publish</button>
+                </div>
+            </form>
+        </section>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+
+
+</body>
+</html>

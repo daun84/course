@@ -1,0 +1,60 @@
+/* Top Bar Styles */
+/* ... (your existing styles for the top bar) ... */
+
+/* Login Form Styles */
+.container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    max-width: 400px; /* Adjust the maximum width of the login form */
+    background-color: #fff; /* White background for the login form */
+    border: 1px solid #e1e1e1; /* Light gray border around the login form */
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+}
+
+.login-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333; /* Dark gray color for the login title */
+}
+
+.login-input {
+    font-size: 16px;
+    color: #333; /* Dark gray color for the input text */
+    width: 95%;
+    max-width: 300px; /* Adjust the maximum width of the input elements */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc; /* Light gray border for the inputs */
+    border-radius: 5px;
+}
+
+.login-button {
+    padding: 10px 20px;
+    background-color: #0079d3; /* Reddit's blue color for the login button */
+    color: #fff; /* White text color for the login button */
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.register-link {
+    font-size: 14px;
+    color: #666; /* Medium gray color for the register link text */
+    margin-top: 10px;
+}
+
+.register-link a {
+    color: #0079d3; /* Reddit's blue color for the register link */
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline; /* Underline the register link on hover */
+}
