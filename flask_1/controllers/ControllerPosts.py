@@ -19,7 +19,9 @@ class ControllerPosts:
         ).all()
         return render_template('home.html', posts=all_posts)
 
-    
+    # TODO
+    # cannot use return only once per function 
+    # because of some flash bug (it requires reloading page)
     @staticmethod
     @blueprint.route('/new', methods=["POST", "GET"])
     def new():
@@ -74,6 +76,10 @@ class ControllerPosts:
 
         return render_template('new_post.html', post=post)
 
+
+    # TODO
+    # cannot use return only once per function 
+    # because of some flash bug(it requires reloading page) 
     @staticmethod
     @blueprint.route('/edit/<url_slug>', methods=["POST", "GET"])
     def edit(url_slug):
