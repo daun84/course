@@ -3,13 +3,19 @@
 <head>
     <title>Login Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='flash.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='error.css') }}">
 </head>
 <body>
     <div class="container">
 
         <div class="container">
             <section class="login-form">
+                {% if error %}
+                <div class="error-message">
+                        {{ error }}<br>
+                </div>
+                {% endif %}
+
                 <h1 class="login-title">Log in</h1>
                 <form method="POST" action="{{ url_for('authentication.login') }}">
                     <input type="text" name="username" placeholder="Username" class="login-input">
@@ -18,19 +24,6 @@
                 </form>
                 <p class="register-link">Don't have an account? <a href="{{ url_for('authentication.register') }}">Register</a></p>
             </section>
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <div class="flash-message {{ category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            {% endwith %}
-
         </div>
 
     </div>

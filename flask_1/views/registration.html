@@ -9,6 +9,12 @@
 
     <div class="container">
         <section class="register-form">
+            {% if error %}
+            <div class="error-message">
+                    {{ error }}<br>
+            </div>
+            {% endif %}
+
             <h1 class="register-title">Register</h1>
             <form method="POST" action="{{ url_for('authentication.register') }}">
                 <input type="text" name="username" placeholder="Username" class="register-input">
@@ -19,18 +25,6 @@
             </form>
             <p class="login-link">Already have an account? <a href="{{ url_for('authentication.login') }}">Log in</a></p>
         </section>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        {% endwith %}
 
     </div>
 

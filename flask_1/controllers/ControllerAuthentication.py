@@ -13,6 +13,8 @@ class ControllerAuthentication:
     @staticmethod
     @blueprint.route('/register', methods=["GET", "POST"])
     def register():
+        result = render_template('registration.html')
+
         if request.method == "POST":
 
             username = request.form.get("username").strip()
@@ -25,11 +27,14 @@ class ControllerAuthentication:
             existing_email = g.db_session.query(ModelUser).filter_by(user_email=email).first()
 
             if user is not None:
-                flash("Account with this username already exists", category="error")
+                error = "Account with this username already exists"
+                result = render_template('registration.html', error=error)
             elif password != repeat_password:
-                flash("Passwords must be the same", category="error")
+                error = "Passwords must be the same"
+                result = render_template('registration.html', error=error)
             elif existing_email:
-                flash("This email is already being used", category="error")
+                error = "This email is already being used"      
+                result = render_template('registration.html', error=error)
             else:
                 user = ModelUser(
                     user_name=username,
@@ -38,14 +43,16 @@ class ControllerAuthentication:
                     )
                 g.db_session.add(user)
                 g.db_session.commit()
-                return redirect(url_for('authentication.login'))
+                result = redirect(url_for('authentication.login'))
 
-        return render_template('registration.html')
+        return result
 
     
     @staticmethod
     @blueprint.route('/login', methods=["GET", "POST"])
     def login():
+        result = render_template('login.html')
+
         if request.method == "POST":
 
             username = request.form.get("username").strip()
@@ -54,14 +61,16 @@ class ControllerAuthentication:
             user = g.db_session.query(ModelUser).filter_by(user_name=username).first()
             
             if user is None:
-                flash("This user does not exist", category="error")
+                error = "This user does not exist"
+                result = render_template('login.html', error=error)
             elif not check_password_hash(user.user_password, password):
-                flash("Wrong password", category="error")
+                error = "Wrong password"
+                result = render_template('login.html', error=error)
             else:
                 session['user'] = user.user_name
-                return redirect(url_for('posts.published_posts'))
+                result = redirect(url_for('posts.published_posts'))
 
-        return render_template('login.html')
+        return result
 
     
     @staticmethod

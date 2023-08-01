@@ -5,7 +5,11 @@
 .container {
     margin-top: 20px;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .register-form {

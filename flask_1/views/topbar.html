@@ -2,7 +2,7 @@
     <div class="top-bar">
         <a class="logo" href="/">CMS</a>
 
-        <form class="search-form" action="/search" method="get">
+        <form class="search-form" action="{{ url_for('posts.published_posts') }}" method="get">
             <input type="text" name="query" placeholder="Search" />
             <button type="submit">Search</button>
         </form>

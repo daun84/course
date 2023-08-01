@@ -1,3 +1,5 @@
+from functools import wraps
+
 import flask
 from flask import request, redirect, url_for, render_template, flash, session, g
 
@@ -8,25 +10,49 @@ from models.enums.EnumPostStatus import EnumPostStatus
 from sqlalchemy import and_, func
 
 
+def login_reqired(original_function):
+
+    @wraps(original_function)
+    def wrapped_function(*args, **kwargs):
+        result = None
+        if g.user is None:
+            result = redirect(url_for('authentication.login'))
+        else:
+            result = original_function(*args, **kwargs)
+        return result
+    
+    return wrapped_function
+
+
 class ControllerPosts:
     blueprint = flask.Blueprint("posts", __name__, url_prefix="/posts")
 
     @staticmethod
     @blueprint.route('/')
     def published_posts():
-        all_posts = g.db_session.query(ModelPost).filter(
-            ModelPost.post_status == EnumPostStatus.published
-        ).all()
-        return render_template('home.html', posts=all_posts)
+        result = None
+        query = request.args.get('query', default=None)
 
-    # TODO
-    # cannot use return only once per function 
-    # because of some flash bug (it requires reloading page)
+        if query is None:
+            all_posts = g.db_session.query(ModelPost).filter(
+                ModelPost.post_status == EnumPostStatus.published
+            ).all()
+            result = render_template('home.html', posts=all_posts)
+        else:
+            query_posts = g.db_session.query(ModelPost).filter(and_(
+                ModelPost.post_status == EnumPostStatus.published,
+                ModelPost.post_title.like(f'%{query}%')
+            )).all()
+            result = render_template('home.html', posts=query_posts, search=True)
+
+        return result
+
     @staticmethod
     @blueprint.route('/new', methods=["POST", "GET"])
+    @login_reqired
     def new():
-        if g.user is None:
-            return redirect(url_for('authentication.login'))
+        post = None
+        result = None
 
         # checking if current user has draft post 
         # (there can be only one draft post for user)
@@ -34,6 +60,8 @@ class ControllerPosts:
             ModelPost.post_status == EnumPostStatus.draft, 
             ModelPost.post_author_id == g.user.user_id
         )).first()
+
+        result = render_template('new_post.html', post=post)
 
         if request.method == "POST":
             # if there's no draft post - creat new one
@@ -47,7 +75,6 @@ class ControllerPosts:
             post.post_body = request.form.get('body').strip()
             g.db_session.commit()
             
-
             url_slug = request.form.get('url_slug').strip()
 
             action = request.form.get('action')
@@ -55,7 +82,7 @@ class ControllerPosts:
             if 'draft' == action:
                 post.post_url_slug = url_slug
                 g.db_session.commit()
-                return redirect(url_for('posts.published_posts'))
+                result = redirect(url_for('posts.published_posts'))
             elif 'publish' == action:
                 # check if url_slug is compatible 
                 existing_post = g.db_session.query(ModelPost).filter(and_(
@@ -64,34 +91,36 @@ class ControllerPosts:
                     )).first()
 
                 if ' ' in url_slug:
-                    flash("This url_slug is not allowed", category='error')
+                    error = "This url_slug is not allowed"
+                    result = render_template('new_post.html', post=post, error=error)
                 elif existing_post:
-                    flash("This url_slug is already being used", category='error')
+                    error = "This url_slug is already being used"
+                    result = render_template('new_post.html', post=post, error=error)
                 else:
                     post.post_url_slug = url_slug
                     post.post_status = EnumPostStatus.published
                     post.post_created = func.now()
                     g.db_session.commit()
-                    return redirect(url_for('posts.published_posts'))
+                    result = redirect(url_for('posts.published_posts'))
 
-        return render_template('new_post.html', post=post)
+        return result
 
-
-    # TODO
-    # cannot use return only once per function 
-    # because of some flash bug(it requires reloading page) 
     @staticmethod
     @blueprint.route('/edit/<url_slug>', methods=["POST", "GET"])
     def edit(url_slug):
+        result = None
+
         post = g.db_session.query(ModelPost).filter(and_(
             ModelPost.post_status == EnumPostStatus.published, 
             ModelPost.post_url_slug == url_slug
         )).first()
 
+        result = render_template('edit_post.html', post=post)
+
         if post is None:
-            return redirect(url_for('posts.published_posts'))
+            result = redirect(url_for('posts.published_posts'))
         elif g.user is not post.post_author:
-            return redirect(url_for('authentication.login'))
+            result = redirect(url_for('authentication.login'))
         elif request.method == "POST":
                 
             slug = request.form.get('url_slug').strip()
@@ -105,22 +134,24 @@ class ControllerPosts:
                 )).first()
 
                 if ' ' in slug:
-                    flash("This url_slug is not allowed", category='error')
+                    error = "This url_slug is not allowed"
+                    result = render_template('edit_post.html', post=post, error=error)
                 elif existing_post:
-                    flash("This url_slug is already being used", category='error')
+                    error = "This url_slug is already being used"
+                    result = render_template('edit_post.html', post=post, error=error)
                 else:
                     post.post_title = request.form.get('title').strip()
                     post.post_body = request.form.get('body').strip()
                     post.post_url_slug = slug
                     post.post_modified = func.now()
                     g.db_session.commit()
-                    return redirect(url_for('posts.published_posts'))
+                    result = redirect(url_for('posts.published_posts'))
             elif 'delete' == action:
                 post.post_status = EnumPostStatus.deleted
                 g.db_session.commit()
-                return redirect(url_for('posts.published_posts'))
+                result = redirect(url_for('posts.published_posts'))
 
-        return render_template('edit_post.html', post=post)
+        return result
 
 
     @staticmethod
@@ -137,3 +168,5 @@ class ControllerPosts:
             result = render_template('view.html', post=post)
 
         return result
+
+    

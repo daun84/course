@@ -1,9 +1,13 @@
 /* Posts Styles */
+
 .container {
     margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .post {
@@ -58,4 +62,17 @@
 
 .new-post-button:hover {
     background-color: #005da6; /* Darker shade on hover */
+}
+
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.header {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
 }
