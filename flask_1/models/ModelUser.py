@@ -11,7 +11,7 @@ class ModelUser(ModelBase):
     user_email = Column(String, unique=True, nullable=False)
     user_password = Column(String, nullable=False)
 
-    #relationships
+    # Posts
     user_posts = relationship('ModelPost', back_populates='post_author')
 
     def __repr__(self):

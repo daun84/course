@@ -1,47 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit a Post</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='edit.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='error.css') }}">
-</head>
-<body>
-    {% include 'topbar.html' %}
+{% extends "base.html" %}
 
+{% block title %} 
+    {% if is_editing %}Edit post{% else %}New post{% endif %}
+{% endblock %}
+
+{% block content %}
     <div class="container">
-        <section class="edit-post">
-            {% if error %}
-            <div class="error-message">
-                    {{ error }}<br>
-            </div>
-            {% endif %}
+        <section class="edit-post"> 
+            
+            <form method="POST" action="
+            {% if is_editing %}
+                {{ url_for('posts.edit', url_slug=post.post_url_slug) }}
+            {% else %}
+                {{ url_for('posts.edit', parent_id=parent_id) }}
+            {% endif %}">
 
-            <form method="POST" action="{{ url_for('posts.edit', url_slug=post.post_url_slug) }}">
+                <input type="text" name="title" placeholder="Title" class="post-title" value="{{ post.post_title }}" required>
+                <textarea name="body" placeholder="Main Text" class="post-body" required>{{ post.post_body }}</textarea>
+                <input type="text" name="url_slug" placeholder="URL Slug" class="url-slug" value="{% if is_editing %}{{ post.post_url_slug.split('/')[-1] }}{% endif %}" required>
 
-                <input type="text" name="title" placeholder="Title" class="post-title" value="{{ post.post_title }}">
-                <textarea name="body" placeholder="Main Text" class="post-body">{{ post.post_body }}</textarea>
-                <input type="text" name="url_slug" placeholder="URL Slug" class="url-slug" value="{{ post.post_url_slug }}">
-                
                 <div class="buttons">
-                    <button type="submit" name="action" value="update">Update</button>
-                    <button type="submit" name="action" value="delete">Delete</button>
+                    <button type="submit" name="action" value="submit">Submit</button>
+                    {% if is_editing %}
+                        <button type="submit" name="action" value="delete">Delete</button>
+                    {% endif %}
                 </div>
+
             </form>
+
         </section>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        {% endwith %}
-        
     </div>
-</body>
-</html>
+{% endblock %}

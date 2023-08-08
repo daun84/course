@@ -1,5 +1,3 @@
-from functools import wraps
-
 import flask
 from flask import request, redirect, url_for, render_template, flash, session, g
 
@@ -7,21 +5,13 @@ from models.ModelUser import ModelUser
 from models.ModelPost import ModelPost
 from models.enums.EnumPostStatus import EnumPostStatus
 
+from controllers.ControllerDatabase import ControllerDatabase
+
 from sqlalchemy import and_, func
 
+from utils.login_required import login_reqired
 
-def login_reqired(original_function):
-
-    @wraps(original_function)
-    def wrapped_function(*args, **kwargs):
-        result = None
-        if g.user is None:
-            result = redirect(url_for('authentication.login'))
-        else:
-            result = original_function(*args, **kwargs)
-        return result
-    
-    return wrapped_function
+from loguru import logger
 
 
 class ControllerPosts:
@@ -31,141 +21,115 @@ class ControllerPosts:
     @blueprint.route('/')
     def published_posts():
         result = None
-        query = request.args.get('query', default=None)
 
-        if query is None:
-            all_posts = g.db_session.query(ModelPost).filter(
-                ModelPost.post_status == EnumPostStatus.published
-            ).all()
-            result = render_template('home.html', posts=all_posts)
-        else:
-            query_posts = g.db_session.query(ModelPost).filter(and_(
-                ModelPost.post_status == EnumPostStatus.published,
-                ModelPost.post_title.like(f'%{query}%')
-            )).all()
-            result = render_template('home.html', posts=query_posts, search=True)
+        try:
+            success_message = request.args.get('success_message')
+            query = request.args.get('query', default=None)
+
+            if query is None:
+                all_posts = ControllerDatabase.get_posts(post_parent_id=0)
+                result = render_template('home.html', posts=all_posts, success_message=success_message)
+            else:
+                query_posts = ControllerDatabase.get_posts(search_query=query, post_parent_id=0)
+                result = render_template('home.html', posts=query_posts, search=True, success_message=success_message)
+        except Exception as e:
+            logger.error(e)
+            result = render_template('error.html', error_code=500, error_message="Internal error")
 
         return result
 
     @staticmethod
     @blueprint.route('/new', methods=["POST", "GET"])
+    @blueprint.route('/edit/<path:url_slug>', methods=["POST", "GET"])
     @login_reqired
-    def new():
-        post = None
+    def edit(url_slug=None):
         result = None
 
-        # checking if current user has draft post 
-        # (there can be only one draft post for user)
-        post = g.db_session.query(ModelPost).filter(and_(
-            ModelPost.post_status == EnumPostStatus.draft, 
-            ModelPost.post_author_id == g.user.user_id
-        )).first()
+        try:
+            post = None
+            is_editing = url_slug is not None
+            parent_id = (int)(request.args.get('parent_id', 0))
 
-        result = render_template('new_post.html', post=post)
+            if is_editing:
+                post = ControllerDatabase.get_posts(get_one=True, url_slug=url_slug)
 
-        if request.method == "POST":
-            # if there's no draft post - creat new one
-            if post is None:
-                post = ModelPost()
-                post.post_status = EnumPostStatus.draft
-                post.post_author = g.user
-                g.db_session.add(post)
+            result = render_template('edit_post.html', post=post, is_editing=is_editing, parent_id=parent_id)
 
-            post.post_title = request.form.get('title').strip()
-            post.post_body = request.form.get('body').strip()
-            g.db_session.commit()
-            
-            url_slug = request.form.get('url_slug').strip()
-
-            action = request.form.get('action')
-
-            if 'draft' == action:
-                post.post_url_slug = url_slug
-                g.db_session.commit()
+            if is_editing and post is None:
                 result = redirect(url_for('posts.published_posts'))
-            elif 'publish' == action:
-                # check if url_slug is compatible 
-                existing_post = g.db_session.query(ModelPost).filter(and_(
-                    ModelPost.post_url_slug == url_slug,
-                    ModelPost.post_id != post.post_id
-                    )).first()
-
-                if ' ' in url_slug:
-                    error = "This url_slug is not allowed"
-                    result = render_template('new_post.html', post=post, error=error)
-                elif existing_post:
-                    error = "This url_slug is already being used"
-                    result = render_template('new_post.html', post=post, error=error)
-                else:
-                    post.post_url_slug = url_slug
-                    post.post_status = EnumPostStatus.published
-                    post.post_created = func.now()
-                    g.db_session.commit()
-                    result = redirect(url_for('posts.published_posts'))
-
-        return result
-
-    @staticmethod
-    @blueprint.route('/edit/<url_slug>', methods=["POST", "GET"])
-    def edit(url_slug):
-        result = None
-
-        post = g.db_session.query(ModelPost).filter(and_(
-            ModelPost.post_status == EnumPostStatus.published, 
-            ModelPost.post_url_slug == url_slug
-        )).first()
-
-        result = render_template('edit_post.html', post=post)
-
-        if post is None:
-            result = redirect(url_for('posts.published_posts'))
-        elif g.user is not post.post_author:
-            result = redirect(url_for('authentication.login'))
-        elif request.method == "POST":
+            elif request.method == "POST":
                 
-            slug = request.form.get('url_slug').strip()
+                action = request.form.get('action')
 
-            action = request.form.get('action')
+                if 'submit' == action:
+                    slug = request.form.get('url_slug').strip()
+                    url_prefix: str = ""
+            
+                    if is_editing:
+                        last_slash_index = url_slug.rfind('/')
+                        url_prefix = url_slug[:last_slash_index + 1]
+                    elif parent_id != 0:
+                        parent_post = ControllerDatabase.get_posts(get_one=True, post_id=parent_id)
+                        url_prefix = parent_post.post_url_slug + '/'
 
-            if 'update' == action:
-                existing_post = g.db_session.query(ModelPost).filter(and_(
-                    ModelPost.post_url_slug == slug,
-                    ModelPost.post_id != post.post_id
-                )).first()
+                    final_slug: str = url_prefix + slug 
 
-                if ' ' in slug:
-                    error = "This url_slug is not allowed"
-                    result = render_template('edit_post.html', post=post, error=error)
-                elif existing_post:
-                    error = "This url_slug is already being used"
-                    result = render_template('edit_post.html', post=post, error=error)
-                else:
-                    post.post_title = request.form.get('title').strip()
-                    post.post_body = request.form.get('body').strip()
-                    post.post_url_slug = slug
-                    post.post_modified = func.now()
-                    g.db_session.commit()
-                    result = redirect(url_for('posts.published_posts'))
-            elif 'delete' == action:
-                post.post_status = EnumPostStatus.deleted
-                g.db_session.commit()
-                result = redirect(url_for('posts.published_posts'))
+                    existing_posts = ControllerDatabase.get_posts(url_slug=final_slug)
 
+                    if ' ' in slug or '/' in slug:
+                        error = "This url_slug is not allowed"
+                        result = render_template('edit_post.html', post=post, error_message=error, is_editing=is_editing, parent_id=parent_id)
+                    elif not (len(existing_posts) == 0 or \
+                        len(existing_posts) == 1 and post in existing_posts):
+                        error = "This url_slug is already being used"
+                        result = render_template('edit_post.html', post=post, error_message=error, is_editing=is_editing, parent_id=parent_id)
+                    else:
+                        if not is_editing:
+                            post = ModelPost()
+                            post.post_status = EnumPostStatus.published
+                            post.post_author = g.user
+                            post.post_created = func.now()
+                            post.post_parent_id = parent_id
+
+                        post.post_title = request.form.get('title').strip()
+                        post.post_body = request.form.get('body').strip()
+                        post.post_url_slug = final_slug
+                        post.post_modified = func.now()
+                        ControllerDatabase.insert_post(post)
+
+                        if is_editing:
+                            ControllerDatabase.update_post(post)
+
+                        success_message = "Post edited" if is_editing else "Post created" 
+
+                        result = redirect(url_for('posts.published_posts', success_message=success_message))
+                elif 'delete' == action:
+                    ControllerDatabase.delete_post(post)
+                    success_message = "Post deleted"
+                    result = redirect(url_for('posts.published_posts', success_message=success_message))
+        except Exception as e:
+            logger.error(e)
+            result = render_template('error.html', error_code=500, error_message="Internal error")
+            
         return result
 
 
     @staticmethod
-    @blueprint.route('/view/<url_slug>')
+    @blueprint.route('/view/<path:url_slug>')
     def view(url_slug):
-        post = g.db_session.query(ModelPost).filter(and_(
-            ModelPost.post_status == EnumPostStatus.published, 
-            ModelPost.post_url_slug == url_slug
-        )).first()
+        result = None
 
-        if post is None:
-            result = redirect(url_for('posts.published_posts'))
-        else:
-            result = render_template('view.html', post=post)
+        try:
+            post = ControllerDatabase.get_posts(get_one=True, url_slug=url_slug)
+
+            if post is None:
+                result = redirect(url_for('posts.published_posts'))
+            else:
+                sub_posts = ControllerDatabase.get_posts(post_parent_id=post.post_id)
+                result = render_template('view.html', post=post, sub_posts=sub_posts)
+        except Exception as e:
+            logger.error(e)
+            result = render_template('error.html', error_code=500, error_message="Internal error")
 
         return result
 

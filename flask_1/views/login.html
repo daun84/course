@@ -1,31 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='error.css') }}">
-</head>
-<body>
-    <div class="container">
+{% extends "base.html" %}
 
+{% block title %}Login{% endblock %}
+
+{% block content %}
         <div class="container">
             <section class="login-form">
-                {% if error %}
-                <div class="error-message">
-                        {{ error }}<br>
-                </div>
-                {% endif %}
 
                 <h1 class="login-title">Log in</h1>
                 <form method="POST" action="{{ url_for('authentication.login') }}">
-                    <input type="text" name="username" placeholder="Username" class="login-input">
-                    <input type="password" name="password" placeholder="Password" class="login-input">
+                    <input type="text" name="username" placeholder="Username" class="login-input" required>
+                    <input type="password" name="password" placeholder="Password" class="login-input" required>
                     <button type="submit" class="login-button">Log in</button>
                 </form>
                 <p class="register-link">Don't have an account? <a href="{{ url_for('authentication.register') }}">Register</a></p>
             </section>
         </div>
-
-    </div>
-</body>
-</html>
+{% endblock %}

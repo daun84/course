@@ -1,32 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register - My Blog</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='flash.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
+{% block title %}Register{% endblock %}
+
+{% block content %}
     <div class="container">
         <section class="register-form">
-            {% if error %}
-            <div class="error-message">
-                    {{ error }}<br>
-            </div>
-            {% endif %}
-
             <h1 class="register-title">Register</h1>
             <form method="POST" action="{{ url_for('authentication.register') }}">
-                <input type="text" name="username" placeholder="Username" class="register-input">
-                <input type="email" name="email" placeholder="Email" class="register-input">
-                <input type="password" name="password" placeholder="Password" class="register-input">
-                <input type="password" name="repeat_password" placeholder="Confirm Password" class="register-input">
+                <input type="text" name="username" placeholder="Username" class="register-input" required>
+                <input type="email" name="email" placeholder="Email" class="register-input" required>
+                <input type="password" name="password" placeholder="Password" class="register-input" required>
+                <input type="password" name="repeat_password" placeholder="Confirm Password" class="register-input" required>
                 <button type="submit" class="register-button">Register</button>
             </form>
             <p class="login-link">Already have an account? <a href="{{ url_for('authentication.login') }}">Log in</a></p>
         </section>
 
     </div>
-
-</body>
-</html>
+{% endblock %}

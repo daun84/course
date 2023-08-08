@@ -1,27 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{% block title %}Default Title{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-</head>
-<body>
-    {% include 'topbar.html' %}
+{% extends "base.html" %}
 
-    {% if g.user %}
-    <div class="button-container">
-        <a href="{{ url_for('posts.new') }}" class="new-post-button">New Post</a>
-    </div>
-    {% endif %}
+{% block title %}CMS{% endblock %}
 
+{% block content %}
     <div class="container">
+        {% if g.user %}
+        <a href="{{ url_for('posts.edit', parent_id=0 ) }}" class="new-post-button">New Post</a>
+        {% endif %}
+
         {% if posts or search %}
 
-        <div class="header-container">
-            {% if search %}
-            <h1 class="header">{{ posts|length }} posts found</h1>
-            {% endif %}
-        </div>
+        {% if search %}
+        <h1 class="header">{{ posts|length }} posts found</h1>
+        {% endif %}
 
         <section class="posts">
             {% for post in posts %}
@@ -40,6 +31,5 @@
         <h1 class="header">There's no posts right now</h1>
         {% endif %}
     </div>
+{% endblock %}
 
-</body>
-</html>

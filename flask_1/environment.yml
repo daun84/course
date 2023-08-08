@@ -10,3 +10,4 @@ channels:
 dependencies:
   - flask
   - sqlalchemy
+  - loguru

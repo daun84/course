@@ -4,8 +4,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from models.ModelUser import ModelUser
 
+from controllers.ControllerDatabase import ControllerDatabase
+
 from database import Session
 
+from loguru import logger
 
 class ControllerAuthentication:
     blueprint = flask.Blueprint("authentication", __name__)
@@ -13,37 +16,45 @@ class ControllerAuthentication:
     @staticmethod
     @blueprint.route('/register', methods=["GET", "POST"])
     def register():
-        result = render_template('registration.html')
+        result = None
 
-        if request.method == "POST":
+        try:                  
+            result = render_template('registration.html')
 
-            username = request.form.get("username").strip()
-            email = request.form.get("email").strip()
-            password = request.form.get("password").strip()
-            repeat_password = request.form.get("repeat_password").strip()
+            if request.method == "POST":
 
-            user = g.db_session.query(ModelUser).filter_by(user_name=username).first()
+                username = request.form.get("username").strip()
+                email = request.form.get("email").strip()
+                password = request.form.get("password").strip()
+                repeat_password = request.form.get("repeat_password").strip()
 
-            existing_email = g.db_session.query(ModelUser).filter_by(user_email=email).first()
+                user = ControllerDatabase.get_user(username=username)
 
-            if user is not None:
-                error = "Account with this username already exists"
-                result = render_template('registration.html', error=error)
-            elif password != repeat_password:
-                error = "Passwords must be the same"
-                result = render_template('registration.html', error=error)
-            elif existing_email:
-                error = "This email is already being used"      
-                result = render_template('registration.html', error=error)
-            else:
-                user = ModelUser(
-                    user_name=username,
-                    user_email=email,
-                    user_password=generate_password_hash(password)
-                    )
-                g.db_session.add(user)
-                g.db_session.commit()
-                result = redirect(url_for('authentication.login'))
+                existing_email = ControllerDatabase.get_user(email=email)
+
+                if user is not None:
+                    error = "Account with this username already exists"
+                    result = render_template('registration.html', error_message=error)
+                elif password != repeat_password:
+                    error = "Passwords must be the same"
+                    result = render_template('registration.html', error_message=error)
+                elif existing_email:
+                    error = "This email is already being used"      
+                    result = render_template('registration.html', error_message=error)
+                else:
+                    user = ModelUser(
+                        user_name=username,
+                        user_email=email,
+                        user_password=generate_password_hash(password)
+                        )
+                    ControllerDatabase.insert_user(user)
+
+                    success_message = "User successfully created"
+
+                    result = redirect(url_for('authentication.login', success_message=success_message))
+        except Exception as e:
+            logger.error(e)
+            result = render_template('error.html', error_code=500, error_message="Internal error")
 
         return result
 
@@ -51,24 +62,34 @@ class ControllerAuthentication:
     @staticmethod
     @blueprint.route('/login', methods=["GET", "POST"])
     def login():
-        result = render_template('login.html')
+        result = None
 
-        if request.method == "POST":
+        try:
+            success_message = request.args.get('success_message')
+            result = render_template('login.html', success_message=success_message)
 
-            username = request.form.get("username").strip()
-            password = request.form.get("password").strip()
+            if request.method == "POST":
 
-            user = g.db_session.query(ModelUser).filter_by(user_name=username).first()
-            
-            if user is None:
-                error = "This user does not exist"
-                result = render_template('login.html', error=error)
-            elif not check_password_hash(user.user_password, password):
-                error = "Wrong password"
-                result = render_template('login.html', error=error)
-            else:
-                session['user'] = user.user_name
-                result = redirect(url_for('posts.published_posts'))
+                username = request.form.get("username").strip()
+                password = request.form.get("password").strip()
+
+                user = ControllerDatabase.get_user(username=username)
+                
+                if user is None:
+                    error = "This user does not exist"
+                    result = render_template('login.html', error_message=error)
+                elif not check_password_hash(user.user_password, password):
+                    error = "Wrong password"
+                    result = render_template('login.html', error_message=error)
+                else:
+                    session['user'] = user.user_name
+
+                    success_message = "You successfully logged in"
+
+                    result = redirect(url_for('posts.published_posts', success_message=success_message))
+        except Exception as e:
+            logger.error(e)
+            result = render_template('error.html', error_code=500, error_message="Internal error")
 
         return result
 

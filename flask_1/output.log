@@ -1,0 +1,54 @@
+2023-08-08 11:43:05 | ERROR | controllers.ControllerPosts | 'None' has no attribute 'post_url_slug'
+2023-08-08 11:45:35 | INFO | controllers.ControllerPosts | [Title 1, asd, 1, EnumPostStatus.published, test 2, asd/asd, 1, EnumPostStatus.published]
+2023-08-08 11:46:14 | INFO | controllers.ControllerPosts | [Title 1, asd, 0, EnumPostStatus.published, test 2, asd/asd, 4, EnumPostStatus.published]
+2023-08-08 11:46:29 | INFO | controllers.ControllerPosts | [Title 1, asd, 0, EnumPostStatus.published, test 2, asd/asd, 4, EnumPostStatus.published]
+2023-08-08 11:46:31 | INFO | controllers.ControllerPosts | [Title 1, asd, 0, EnumPostStatus.published, test 2, asd/asd, 4, EnumPostStatus.published]
+2023-08-08 11:48:39 | INFO | controllers.ControllerPosts | [Title 1, asd, 0, EnumPostStatus.published]
+2023-08-08 14:06:17 | ERROR | controllers.ControllerPosts | Encountered unknown tag 'endif'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2023-08-08 14:06:28 | ERROR | controllers.ControllerPosts | Encountered unknown tag 'endif'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2023-08-08 14:14:18 | ERROR | controllers.ControllerPosts | Encountered unknown tag 'endif'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2023-08-08 14:15:48 | ERROR | controllers.ControllerPosts | Encountered unknown tag 'endif'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2023-08-08 14:18:52 | ERROR | controllers.ControllerPosts | Encountered unknown tag 'endif'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2023-08-08 15:57:35 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 15:57:42 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:05:05 | INFO | controllers.ControllerPosts | None
+2023-08-08 16:05:16 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:08:53 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:08:57 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:08:57 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:09:00 | INFO | controllers.ControllerPosts | None
+2023-08-08 16:09:02 | INFO | controllers.ControllerPosts | None
+2023-08-08 16:09:30 | INFO | controllers.ControllerPosts | None
+2023-08-08 16:09:36 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:10:05 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:11:05 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:11:07 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:11:07 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:11:07 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:11:47 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:13:10 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:13:11 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:13:17 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:13:29 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:37 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:37 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:37 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:39 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:39 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:39 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:40 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:40 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:41 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:41 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:41 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:42 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:43 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:44 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:44 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:44 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:14:44 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:15:41 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:15:46 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:16:44 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:16:48 | INFO | controllers.ControllerPosts | Post created
+2023-08-08 16:17:28 | ERROR | controllers.ControllerPosts | 'logger' is undefined

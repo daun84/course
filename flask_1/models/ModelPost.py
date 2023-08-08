@@ -17,9 +17,14 @@ class ModelPost(ModelBase):
     post_modified = Column(DateTime)
     post_status = Column(Enum(EnumPostStatus), default=EnumPostStatus.not_set)
 
-    #relationships
+    # Post author
     post_author_id = Column(Integer, ForeignKey('users.user_id'))
     post_author = relationship('ModelUser', back_populates="user_posts")
 
+    # Children posts / Parent post
+    post_parent_id = Column(Integer, ForeignKey('posts.post_id'), default=0)
+    parent_post = relationship('ModelPost', remote_side=[post_id], back_populates='child_posts')
+    child_posts = relationship('ModelPost', remote_side=[post_parent_id], back_populates='parent_post')
+
     def __repr__(self):
-        return f'{self.post_title}, {self.post_url_slug}, {self.post_author_id}, {self.post_status}'
+        return f'{self.post_title}, {self.post_url_slug}, {self.post_parent_id}, {self.post_status}'

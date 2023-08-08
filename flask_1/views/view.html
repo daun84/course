@@ -1,26 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ post.post_title }} - My Blog</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='topbar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='view.css') }}">
-</head>
-<body>
-    {% include 'topbar.html' %}
+{% extends "base.html" %}
 
+{% block title %}View post{% endblock %}
+
+{% block content %}
     <div class="container">
-        <section class="post">
+        <section class="view-post">
             <h1 class="post-title">{{ post.post_title }}</h1>
             <p class="post-date">Posted by {{ post.post_author }} {{ post.post_created }}</p>
             <div class="post-body">
                 {{ post.post_body | safe }}
             </div>
             
-            {% if g.user == post.post_author %}
-            <a href="{{ url_for('posts.edit', url_slug=post.post_url_slug) }}" class="edit-button">Edit</a>
-            {% endif %}
         </section>
-    </div>
+        <div class="buttons">
+            {% if g.user == post.post_author %}
+            <a href="{{ url_for('posts.edit', url_slug=post.post_url_slug) }}" class="edit-button">
+                <button>Edit</button>
+            </a>
+            {% endif %}
+            <a href="{{ url_for('posts.edit', parent_id=post.post_id) }}" class="edit-button">
+                <button>Create sub-post</button>
+            </a>
+        </div>
 
-</body>
-</html>
+        {% if sub_posts %}
+        <h1 class="header">{{ sub_posts|length }} sub-posts</h1>
+
+        <section class="posts">
+            {% for post in sub_posts %}
+                <div class="post">
+                    <div class="author">{{ post.post_author }}</div>
+                    <div class="title">
+                        <a href="{{ url_for('posts.view', url_slug=post.post_url_slug) }}">
+                            {{ post.post_title }}
+                        </a>
+                    </div>
+                    <div class="date">{{ post.post_created }}</div>
+                </div>
+            {% endfor %}
+        </section>
+        {% else %}
+        <h1 class="header">There's no sub-posts right now</h1>
+        {% endif %}
+    </div> 
+{% endblock %}
