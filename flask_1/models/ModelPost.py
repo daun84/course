@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, func
 from sqlalchemy.orm import relationship
 
-from database import ModelBase
+from database import ModelBase, post_tags
 
 from models.enums.EnumPostStatus import EnumPostStatus
 
@@ -25,6 +25,10 @@ class ModelPost(ModelBase):
     post_parent_id = Column(Integer, ForeignKey('posts.post_id'), default=0)
     parent_post = relationship('ModelPost', remote_side=[post_id], back_populates='child_posts')
     child_posts = relationship('ModelPost', remote_side=[post_parent_id], back_populates='parent_post')
+
+    # Tags
+    tags = relationship('ModelTag', secondary=post_tags, back_populates='posts')
+
 
     def __repr__(self):
         return f'{self.post_title}, {self.post_url_slug}, {self.post_parent_id}, {self.post_status}'

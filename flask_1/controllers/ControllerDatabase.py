@@ -1,10 +1,11 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, func, and_
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, joinedload
 
-from database import Session
+from database import Session, post_tags
 
 from models.ModelPost import ModelPost
 from models.ModelUser import ModelUser
+from models.ModelTag import ModelTag
 from models.enums.EnumPostStatus import EnumPostStatus
 
 from loguru import logger
@@ -12,6 +13,8 @@ from loguru import logger
 from typing import List, Union
 
 from flask import g
+
+from utils.get_single_or_list import get_single_or_list
 
 class ControllerDatabase:
 
@@ -30,7 +33,9 @@ class ControllerDatabase:
             if email:
                 filters.append(ModelUser.user_email == email)
 
-            user = g.db_session.query(ModelUser).filter(and_(*filters)).limit(1).first()
+            query = g.db_session.query(ModelUser)
+            filtered_query = query.filter(and_(*filters)).limit(1)
+            user = filtered_query.first()
 
         except Exception as e:
             logger.error(e)
@@ -39,15 +44,17 @@ class ControllerDatabase:
 
 
     @staticmethod
+    @get_single_or_list
     def get_posts(
         post_author_id: int = None,
+        post_tag: ModelTag = None,
         post_id: int = None,
         url_slug: str = None,
         search_query: str = None,
         post_parent_id: int = None,
         status: EnumPostStatus = EnumPostStatus.published,
         get_one: bool = False
-        ) -> Union[ModelPost, List[ModelPost]]: # is union a good practice?
+        ) -> List[ModelPost]:
         posts = None
         try:
             assert not (get_one and post_id is None and url_slug is None and search_query is None), \
@@ -63,13 +70,21 @@ class ControllerDatabase:
                 filters.append(ModelPost.post_title.like(f'%{search_query}%'))
             if post_parent_id is not None:
                 filters.append(ModelPost.post_parent_id == post_parent_id)
+            if post_tag is not None:
+                filters.append(post_tags.c.tag_id == post_tag.tag_id)
 
             filters.append(ModelPost.post_status == status)
 
+            limit = None
             if get_one:
-                posts = g.db_session.query(ModelPost).filter(and_(*filters)).limit(1).first()
-            else:
-                posts = g.db_session.query(ModelPost).filter(and_(*filters)).all()
+                limit = 1
+
+            query = g.db_session.query(ModelPost)
+            filtered_query = query.filter(and_(*filters))
+            optioned_query = filtered_query.options(joinedload(ModelPost.tags))
+            limited_query = optioned_query.limit(limit)
+            posts = limited_query.all()
+
             
         except Exception as e:
             logger.error(e)
@@ -88,6 +103,7 @@ class ControllerDatabase:
     def insert_post(post: ModelPost):
         try:
             g.db_session.add(post)
+            g.db_session.commit()
         except Exception as e:
             logger.error(e)    
     
@@ -96,7 +112,8 @@ class ControllerDatabase:
         try:
             post.post_status = EnumPostStatus.deleted
             for child in post.child_posts:
-                ControllerDatabase.delete_post(child)
+                ControllerDatabase.delete_post(child)   
+
         except Exception as e:
             logger.error(e)
 
@@ -115,4 +132,54 @@ class ControllerDatabase:
 
         except Exception as e:
             logger.error(e)
-        
+
+    @staticmethod
+    @get_single_or_list
+    def get_tags(
+        tag_name: str = None,
+        tag_id: int = None,
+        get_one: bool = False
+        ) -> List[ModelTag]:
+        tags = []
+        try:
+            assert not (get_one and tag_id is None and tag_name is None), \
+                "get_tags function with get_one flag should have at least one identifier argument"
+            filters = []
+
+            if tag_name is not None:
+                filters.append(ModelTag.tag_name == tag_name)
+            if tag_id is not None:
+                filters.append(ModelTag.tag_id == tag_id)
+
+            limit = None
+            if get_one:
+                limit = 1 
+
+            query = g.db_session.query(ModelTag)
+            filtered_query = query.filter(and_(*filters))
+            limited_query = filtered_query.limit(limit)
+            tags = limited_query.all()
+
+            
+        except Exception as e:
+            logger.error(e)
+
+        return tags
+
+    
+    @staticmethod
+    def delete_tag(tag: ModelTag):
+        try:
+            g.db_session.delete(tag)
+            g.db_session.commit()
+        except Exception as e:
+            logger.error(e)
+
+    
+    @staticmethod
+    def insert_tag(tag: ModelTag):
+        try:
+            g.db_session.add(tag)
+            g.db_session.commit()
+        except Exception as e:
+            logger.error(e)  

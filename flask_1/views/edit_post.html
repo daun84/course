@@ -19,6 +19,15 @@
                 <textarea name="body" placeholder="Main Text" class="post-body" required>{{ post.post_body }}</textarea>
                 <input type="text" name="url_slug" placeholder="URL Slug" class="url-slug" value="{% if is_editing %}{{ post.post_url_slug.split('/')[-1] }}{% endif %}" required>
 
+                <h1>Choose Tags</h1>
+                {% for tag in tags %}
+                <label>
+                    <input type="checkbox" name="tags" value="{{ tag.tag_name }}"
+                        {% if tag in selected_tags %}checked{% endif %}> {{ tag.tag_name }}
+                </label>
+                <br>
+                {% endfor %}
+
                 <div class="buttons">
                     <button type="submit" name="action" value="submit">Submit</button>
                     {% if is_editing %}
@@ -29,6 +38,7 @@
             </form>
 
         </section>
+
 
     </div>
 {% endblock %}

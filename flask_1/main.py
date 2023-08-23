@@ -1,5 +1,5 @@
 import flask
-from flask import url_for, session, request, g, redirect
+from flask import url_for, session, request, g, redirect, render_template
 
 from controllers.ControllerAuthentication import ControllerAuthentication
 from controllers.ControllerPosts import ControllerPosts

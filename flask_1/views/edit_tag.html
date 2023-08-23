@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}CMS{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <section class="edit-post"> 
+            
+            <form method="POST" action="
+            {{ url_for('posts.edit_tag', tag_name=tag.tag_name) }}">
+
+                <input type="text" name="tag_name" placeholder="Tag name" class="post-title" value="{{ tag.tag_name }}" required>
+
+                <div class="buttons">
+                    <button type="submit" name="action" value="submit">Edit</button>
+                    <button type="submit" name="action" value="delete">Delete</button>
+                </div>
+
+            </form>
+        </section>
+
+        {% if sub_posts %}
+        <h1 class="header">{{ sub_posts|length }} sub-posts</h1>
+
+        <section class="posts">
+            {% for post in sub_posts %}
+                <div class="post">
+                    <div class="author">{{ post.post_author }}</div>
+                    <div class="title">
+                        <a href="{{ url_for('posts.view', url_slug=post.post_url_slug) }}">
+                            {{ post.post_title }}
+                        </a>
+                    </div>
+                    <div class="date">{{ post.post_created }}</div>
+                </div>
+            {% endfor %}
+        </section>
+        {% else %}
+        <h1 class="header">There's no sub-posts right now</h1>
+        {% endif %}
+    </div>
+{% endblock %}

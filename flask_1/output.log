@@ -52,3 +52,219 @@
 2023-08-08 16:16:44 | INFO | controllers.ControllerPosts | Post created
 2023-08-08 16:16:48 | INFO | controllers.ControllerPosts | Post created
 2023-08-08 16:17:28 | ERROR | controllers.ControllerPosts | 'logger' is undefined
+2023-08-21 11:42:49 | ERROR | controllers.ControllerDatabase | When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:45:34 | ERROR | controllers.ControllerDatabase | When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:46:04 | ERROR | controllers.ControllerDatabase | name 'q' is not defined
+2023-08-21 11:46:04 | ERROR | controllers.ControllerDatabase | name 'q' is not defined
+2023-08-21 11:46:04 | ERROR | controllers.ControllerAuthentication | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:46:32 | ERROR | controllers.ControllerDatabase | When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:46:32 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:46:33 | ERROR | controllers.ControllerAuthentication | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:46:40 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:46:40 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:46:41 | ERROR | controllers.ControllerAuthentication | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:48:30 | ERROR | controllers.ControllerDatabase | When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:48:30 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:48:30 | ERROR | controllers.ControllerAuthentication | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:48:42 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:48:42 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:48:43 | ERROR | controllers.ControllerAuthentication | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:49:21 | ERROR | controllers.ControllerDatabase | When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:49:21 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:49:22 | ERROR | controllers.ControllerAuthentication | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:51:56 | ERROR | controllers.ControllerDatabase | When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:51:56 | ERROR | controllers.ControllerDatabase | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:51:57 | ERROR | controllers.ControllerAuthentication | One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'mapped class ModelPost->posts'. Original exception was: When initializing mapper mapped class ModelPost->posts, expression 'Tag' failed to locate a name ('Tag'). If this is a class name, consider adding this relationship() to the <class 'models.ModelPost.ModelPost'> class after both dependent classes have been defined.
+2023-08-21 11:53:51 | ERROR | controllers.ControllerDatabase | name 'status' is not defined
+2023-08-21 11:53:51 | ERROR | controllers.ControllerPosts | my_tags.html
+2023-08-21 11:54:40 | ERROR | controllers.ControllerPosts | my_tags.html
+2023-08-21 11:54:41 | ERROR | controllers.ControllerPosts | my_tags.html
+2023-08-21 11:54:48 | ERROR | controllers.ControllerPosts | my_tags.html
+2023-08-21 11:55:19 | ERROR | controllers.ControllerDatabase | Class 'builtins.list' is not mapped
+2023-08-21 11:57:14 | INFO | controllers.ControllerPosts | []
+2023-08-21 11:57:14 | ERROR | controllers.ControllerDatabase | Class 'builtins.list' is not mapped
+2023-08-21 11:58:21 | INFO | controllers.ControllerPosts | []
+2023-08-21 11:58:26 | INFO | controllers.ControllerPosts | []
+2023-08-21 11:58:38 | INFO | controllers.ControllerPosts | asd
+2023-08-21 11:58:38 | ERROR | controllers.ControllerDatabase | (sqlite3.IntegrityError) UNIQUE constraint failed: tags.tag_name
+[SQL: INSERT INTO tags (tag_name, tag_uses) VALUES (?, ?)]
+[parameters: ('asd', None)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+2023-08-21 11:58:38 | ERROR | __main__ | This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: tags.tag_name
+[SQL: INSERT INTO tags (tag_name, tag_uses) VALUES (?, ?)]
+[parameters: ('asd', None)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj) (Background on this error at: https://sqlalche.me/e/14/7s2a)
+2023-08-21 11:59:14 | INFO | controllers.ControllerPosts | aaa
+2023-08-21 12:00:06 | INFO | controllers.ControllerPosts | dgasda
+2023-08-21 12:00:11 | INFO | controllers.ControllerPosts | dgasda
+2023-08-21 12:00:11 | ERROR | controllers.ControllerDatabase | (sqlite3.IntegrityError) UNIQUE constraint failed: tags.tag_name
+[SQL: INSERT INTO tags (tag_name, tag_uses) VALUES (?, ?)]
+[parameters: ('dgasda', 0)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+2023-08-21 12:00:11 | ERROR | __main__ | This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: tags.tag_name
+[SQL: INSERT INTO tags (tag_name, tag_uses) VALUES (?, ?)]
+[parameters: ('dgasda', 0)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj) (Background on this error at: https://sqlalche.me/e/14/7s2a)
+2023-08-21 12:00:15 | INFO | controllers.ControllerPosts | basdasd
+2023-08-21 12:00:39 | INFO | controllers.ControllerPosts | []
+2023-08-21 12:00:39 | INFO | controllers.ControllerPosts | basdasd
+2023-08-21 12:00:39 | ERROR | controllers.ControllerDatabase | (sqlite3.IntegrityError) UNIQUE constraint failed: tags.tag_name
+[SQL: INSERT INTO tags (tag_name, tag_uses) VALUES (?, ?)]
+[parameters: ('basdasd', 0)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+2023-08-21 12:00:39 | ERROR | __main__ | This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (sqlite3.IntegrityError) UNIQUE constraint failed: tags.tag_name
+[SQL: INSERT INTO tags (tag_name, tag_uses) VALUES (?, ?)]
+[parameters: ('basdasd', 0)]
+(Background on this error at: https://sqlalche.me/e/14/gkpj) (Background on this error at: https://sqlalche.me/e/14/7s2a)
+2023-08-21 12:01:06 | INFO | controllers.ControllerPosts | []
+2023-08-21 12:01:57 | INFO | controllers.ControllerPosts | []
+2023-08-21 12:02:07 | INFO | controllers.ControllerPosts | []
+2023-08-21 12:04:29 | INFO | controllers.ControllerPosts | [HIII, a, 0, EnumPostStatus.published, ok, b, 0, EnumPostStatus.published]
+2023-08-21 12:04:32 | INFO | controllers.ControllerPosts | [HIII, a, 0, EnumPostStatus.published, ok, b, 0, EnumPostStatus.published]
+2023-08-21 12:04:32 | INFO | controllers.ControllerPosts | a
+2023-08-21 12:04:36 | INFO | controllers.ControllerPosts | [HIII, a, 0, EnumPostStatus.published, ok, b, 0, EnumPostStatus.published]
+2023-08-21 12:04:36 | INFO | controllers.ControllerPosts | b
+2023-08-21 12:04:38 | INFO | controllers.ControllerPosts | [HIII, a, 0, EnumPostStatus.published, ok, b, 0, EnumPostStatus.published]
+2023-08-21 12:04:38 | INFO | controllers.ControllerPosts | c
+2023-08-21 12:04:39 | INFO | controllers.ControllerPosts | [HIII, a, 0, EnumPostStatus.published, ok, b, 0, EnumPostStatus.published]
+2023-08-21 12:04:43 | INFO | controllers.ControllerPosts | [HIII, a, 0, EnumPostStatus.published, ok, b, 0, EnumPostStatus.published]
+2023-08-21 12:05:25 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c]
+2023-08-21 12:07:01 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c]
+2023-08-21 12:07:33 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c]
+2023-08-21 12:07:33 | ERROR | controllers.ControllerPosts | 'post' is undefined
+2023-08-21 12:10:00 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c]
+2023-08-21 12:10:00 | ERROR | controllers.ControllerPosts | 'post' is undefined
+2023-08-21 12:10:39 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c]
+2023-08-21 12:10:42 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c]
+2023-08-21 12:10:44 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c]
+2023-08-21 12:10:44 | INFO | controllers.ControllerPosts | adbuoasf
+2023-08-21 12:11:54 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf]
+2023-08-21 12:11:57 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf]
+2023-08-21 12:11:57 | INFO | controllers.ControllerPosts | bsadasdasd
+2023-08-21 12:12:04 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:13:36 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:13:51 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:07 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:08 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:09 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:09 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:09 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:09 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:09 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:13 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:15 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:24 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:14:28 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:15:46 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:15:54 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:16:13 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd]
+2023-08-21 12:16:13 | INFO | controllers.ControllerPosts | ok
+2023-08-21 12:16:18 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok]
+2023-08-21 12:16:23 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok]
+2023-08-21 12:16:28 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok]
+2023-08-21 12:16:32 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok]
+2023-08-21 12:16:32 | INFO | controllers.ControllerPosts | labi
+2023-08-21 12:17:34 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi]
+2023-08-21 12:17:38 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi]
+2023-08-21 12:17:40 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi]
+2023-08-21 12:17:40 | INFO | controllers.ControllerPosts | asdoihasdhuoashod
+2023-08-21 12:17:46 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi, asdoihasdhuoashod]
+2023-08-21 12:17:46 | INFO | controllers.ControllerPosts | VIPERVIPER
+2023-08-21 12:18:10 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi, asdoihasdhuoashod, VIPERVIPER]
+2023-08-21 12:18:19 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi, asdoihasdhuoashod, VIPERVIPER]
+2023-08-21 12:18:19 | INFO | controllers.ControllerPosts | a sej4as
+2023-08-21 12:32:52 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi, asdoihasdhuoashod, VIPERVIPER, a sej4as]
+2023-08-21 12:32:54 | ERROR | controllers.ControllerPosts | tag.html
+2023-08-21 12:58:55 | ERROR | controllers.ControllerDatabase | name 'contains_eager' is not defined
+2023-08-21 12:58:58 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi, asdoihasdhuoashod, VIPERVIPER, a sej4as]
+2023-08-21 12:58:59 | ERROR | controllers.ControllerPosts | ControllerDatabase.get_posts() got an unexpected keyword argument 'tag'
+2023-08-21 13:00:00 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi, asdoihasdhuoashod, VIPERVIPER, a sej4as]
+2023-08-21 13:00:01 | ERROR | controllers.ControllerDatabase | name 'contains_eager' is not defined
+2023-08-21 13:00:01 | ERROR | controllers.ControllerPosts | 'tag' is undefined
+2023-08-21 13:00:34 | INFO | controllers.ControllerPosts | [Privet, asd, aaa, dgasda, basdasd, a, b, c, adbuoasf, bsadasdasd, ok, labi, asdoihasdhuoashod, VIPERVIPER, a sej4as]
+2023-08-21 13:00:35 | ERROR | controllers.ControllerPosts | 'tag' is undefined
+2023-08-21 13:01:15 | INFO | controllers.ControllerPosts | Privet
+2023-08-21 13:01:15 | ERROR | controllers.ControllerPosts | 'tag' is undefined
+2023-08-21 13:02:05 | INFO | controllers.ControllerPosts | Privet
+2023-08-21 13:02:18 | INFO | controllers.ControllerPosts | Privet
+2023-08-21 13:02:21 | INFO | controllers.ControllerPosts | Privet
+2023-08-21 14:03:11 | INFO | controllers.ControllerPosts | ['hhho', 'no', 'normal_tag']
+2023-08-21 14:03:55 | INFO | controllers.ControllerPosts | [b]
+2023-08-21 14:04:08 | INFO | controllers.ControllerPosts | [b]
+2023-08-21 14:05:53 | INFO | controllers.ControllerPosts | ['basdasd', 'hhho', 'no', 'normal_tag']
+2023-08-21 14:05:53 | INFO | controllers.ControllerPosts | [basdasd, hhho, no, normal_tag]
+2023-08-21 14:06:51 | INFO | controllers.ControllerPosts | [b]
+2023-08-21 14:06:51 | INFO | controllers.ControllerPosts | [b]
+2023-08-21 14:10:00 | INFO | controllers.ControllerPosts | ['c', 'hhho', 'normal_tag']
+2023-08-21 14:10:00 | INFO | controllers.ControllerPosts | [c, hhho, normal_tag]
+2023-08-21 14:10:00 | INFO | controllers.ControllerPosts | AFTER: 
+2023-08-21 14:11:34 | INFO | controllers.ControllerPosts | ['basdasd', 'hhho', 'normal_tag']
+2023-08-21 14:11:34 | INFO | controllers.ControllerPosts | [basdasd, hhho, normal_tag]
+2023-08-21 14:11:34 | INFO | controllers.ControllerPosts | AFTER: 
+2023-08-21 14:13:40 | INFO | controllers.ControllerPosts | viper
+2023-08-21 14:13:42 | INFO | controllers.ControllerPosts | daun
+2023-08-21 14:13:43 | INFO | controllers.ControllerPosts | net
+2023-08-21 14:13:44 | INFO | controllers.ControllerPosts | a
+2023-08-21 14:13:45 | INFO | controllers.ControllerPosts | b
+2023-08-21 14:13:46 | INFO | controllers.ControllerPosts | c
+2023-08-21 14:13:56 | INFO | controllers.ControllerPosts | ['viper', 'daun', 'net', 'a']
+2023-08-21 14:13:56 | INFO | controllers.ControllerPosts | [viper, daun, net, a]
+2023-08-21 14:13:56 | INFO | controllers.ControllerPosts | AFTER: 
+2023-08-21 14:15:54 | INFO | controllers.ControllerPosts | ['a', 'b']
+2023-08-21 14:15:54 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:15:54 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:15:54 | INFO | controllers.ControllerPosts | AFTER: 
+2023-08-21 14:17:14 | INFO | controllers.ControllerPosts | [net, a]
+2023-08-21 14:17:21 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:17:21 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:19:30 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:19:30 | INFO | controllers.ControllerPosts | 1
+2023-08-21 14:30:21 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:30:31 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:30:31 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:32:15 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:32:15 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:32:24 | INFO | controllers.ControllerPosts | <class 'sqlalchemy.orm.collections.InstrumentedList'>
+2023-08-21 14:32:25 | INFO | controllers.ControllerPosts | [daun, a, c]
+2023-08-21 14:34:42 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:34:48 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:36:36 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:36:36 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:39:13 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:39:13 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:39:23 | INFO | controllers.ControllerPosts | [daun, a]
+2023-08-21 14:39:30 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:45:33 | ERROR | controllers.ControllerPosts | 'SecureCookieSession' object has no attribute 'query'
+2023-08-21 14:46:07 | ERROR | controllers.ControllerPosts | Could not locate column in row for column '__dict__'
+2023-08-21 14:46:27 | INFO | controllers.ControllerPosts | [net, a, b]
+2023-08-21 14:48:44 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:48:49 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:48:49 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:49:23 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:49:24 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:49:24 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:52:03 | INFO | controllers.ControllerPosts | 9
+2023-08-21 14:52:03 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:52:03 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:52:31 | INFO | controllers.ControllerPosts | 4
+2023-08-21 14:52:31 | INFO | controllers.ControllerPosts | [viper]
+2023-08-21 14:56:34 | INFO | controllers.ControllerPosts | 4
+2023-08-21 14:56:34 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:56:34 | ERROR | __main__ | Session.refresh() missing 1 required positional argument: 'instance'
+2023-08-21 14:56:34 | ERROR | __main__ | Session.refresh() missing 1 required positional argument: 'instance'
+2023-08-21 14:56:44 | INFO | controllers.ControllerPosts | 4
+2023-08-21 14:56:44 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:56:51 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:56:51 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:58:36 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:59:01 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:59:06 | INFO | controllers.ControllerPosts | [a, b]
+2023-08-21 14:59:11 | INFO | controllers.ControllerPosts | [viper, daun, net, a]
+2023-08-21 14:59:13 | INFO | controllers.ControllerPosts | [viper, daun, net, a]
+2023-08-21 14:59:16 | INFO | controllers.ControllerPosts | [viper, net, a]
+2023-08-21 15:00:00 | INFO | controllers.ControllerPosts | [viper, net, a]
+2023-08-21 15:06:42 | INFO | controllers.ControllerPosts | [daunasd, b]
+2023-08-21 15:06:45 | INFO | controllers.ControllerPosts | [daunasd, b]
+2023-08-21 15:06:47 | INFO | controllers.ControllerPosts | [b]
+2023-08-21 16:01:49 | INFO | controllers.ControllerPosts | new
+2023-08-21 16:03:08 | INFO | controllers.ControllerPosts | hhjh hjkhj k
